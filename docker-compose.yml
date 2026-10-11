@@ -1,0 +1,68 @@
+services:
+  mysql-vuln:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: vuln_edu_portal
+      MYSQL_USER: websec
+      MYSQL_PASSWORD: websec_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./database/vuln-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mysql-safe:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: safe_edu_portal
+      MYSQL_USER: websec
+      MYSQL_PASSWORD: websec_pass
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./database/safe-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  vulnerable-app:
+    build: ./vulnerable
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: mysql-vuln
+      DB_PORT: 3306
+      DB_USER: websec
+      DB_PASSWORD: websec_pass
+      DB_NAME: vuln_edu_portal
+      SESSION_SECRET: vulnerable-insecure-secret
+      PORT: 4000
+    depends_on:
+      mysql-vuln:
+        condition: service_healthy
+    restart: on-failure
+
+  safe-app:
+    build: ./safe
+    ports:
+      - "5000:5000"
+    environment:
+      DB_HOST: mysql-safe
+      DB_PORT: 3306
+      DB_USER: websec
+      DB_PASSWORD: websec_pass
+      DB_NAME: safe_edu_portal
+      SESSION_SECRET: change-this-to-a-long-random-string
+      PORT: 5000
+    depends_on:
+      mysql-safe:
+        condition: service_healthy
+    restart: on-failure

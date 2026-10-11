@@ -1,0 +1,15 @@
+<%- include('partials/header') %>
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h3>Forgot password</h3>
+    <p class="text-muted">Enter your username. The response is identical whether or not the account
+      exists, and the query is parameterized, so there is no SQLi oracle here.</p>
+    <form method="POST" action="/forgot-password">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="mb-3"><input class="form-control" name="username" placeholder="username"></div>
+      <button class="btn btn-success">Check</button>
+    </form>
+    <% if (result) { %><div class="alert alert-info mt-3"><%= result %></div><% } %>
+  </div>
+</div>
+<%- include('partials/footer') %>

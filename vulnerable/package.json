@@ -1,0 +1,17 @@
+{
+  "name": "fast-edu-portal-vulnerable",
+  "version": "1.0.0",
+  "description": "FAST Edu-Portal - VULNERABLE version (for Web Security coursework, Part 2)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "mysql2": "^3.11.0"
+  }
+}

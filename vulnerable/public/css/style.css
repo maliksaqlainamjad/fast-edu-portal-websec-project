@@ -1,0 +1,5 @@
+body { background: #f7f7fb; }
+.badge-vuln { background:#dc3545; }
+.badge-safe { background:#198754; }
+code.payload { background:#212529; color:#f8f9fa; padding:2px 6px; border-radius:4px; }
+.sql-trace { background:#212529; color:#9effa0; padding:10px; border-radius:6px; font-size:.85rem; white-space:pre-wrap; }

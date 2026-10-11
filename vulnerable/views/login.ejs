@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <h3>Login</h3>
+    <% if (error) { %><div class="alert alert-danger"><%- error %></div><% } %>
+    <form method="POST" action="/login">
+      <div class="mb-3"><label class="form-label">Username</label>
+        <input class="form-control" name="username" autocomplete="off"></div>
+      <div class="mb-3"><label class="form-label">Password</label>
+        <input class="form-control" type="password" name="password"></div>
+      <button class="btn btn-danger">Login</button>
+      <a href="/forgot-password" class="ms-2">Forgot password?</a>
+    </form>
+    <hr>
+    <p class="small text-muted">Demo accounts: <code>admin / Admin@12345</code>, <code>saqlain / Student@123</code></p>
+    <% if (typeof lastSql !== 'undefined' && lastSql) { %>
+      <p class="small text-muted">Last SQL executed (shown for coursework demo only):</p>
+      <div class="sql-trace"><%= lastSql %></div>
+    <% } %>
+  </div>
+</div>
+<%- include('partials/footer') %>

@@ -1,0 +1,28 @@
+<%- include('partials/header') %>
+<h3><%= course.code %> — <%= course.title %></h3>
+<p class="text-muted"><%= course.instructor %></p>
+<p><%= course.description %></p>
+
+<h5 class="mt-4">Reviews</h5>
+<p class="text-muted small">Comments are sanitized before being stored AND escaped on output, so
+  a payload like <code class="payload">&lt;script&gt;alert('Stored XSS')&lt;/script&gt;</code>
+  is stripped down to inert text.</p>
+
+<% reviews.forEach(r => { %>
+  <div class="border rounded p-2 mb-2">
+    <strong><%= r.author_name %></strong>
+    <!-- FIX #2: Stored XSS -> escaped output tag (<%= %>) -->
+    <p class="mb-0"><%= r.comment %></p>
+  </div>
+<% }) %>
+
+<% if (user) { %>
+  <form method="POST" action="/courses/<%= course.id %>/review" class="mt-3">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <div class="mb-2"><textarea class="form-control" name="comment" placeholder="Write a review..."></textarea></div>
+    <button class="btn btn-success btn-sm">Post review</button>
+  </form>
+<% } else { %>
+  <p><a href="/login">Login</a> to post a review.</p>
+<% } %>
+<%- include('partials/footer') %>

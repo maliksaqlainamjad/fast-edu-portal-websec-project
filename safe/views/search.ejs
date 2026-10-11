@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+<h3>Search courses</h3>
+<form method="GET" action="/search">
+  <div class="input-group mb-3">
+    <input class="form-control" name="q" value="<%= q %>" placeholder="e.g. Security">
+    <button class="btn btn-success">Search</button>
+  </div>
+</form>
+
+<!-- FIX #1: Reflected XSS -> EJS auto-escaping tag (<%= %>) -->
+<p>Showing results for: <strong><%= q %></strong></p>
+
+<p class="small text-muted">
+  The query above is sent to MySQL as a bound parameter, so SQLi payloads like
+  <code class="payload">' UNION SELECT 1,2,3,4-- -</code> are treated as a literal search
+  string (no results / zero matches) instead of being executed as SQL.
+</p>
+
+<div class="row">
+  <% results.forEach(r => { %>
+    <div class="col-md-6 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><%= r.title %></h5>
+          <p class="card-text small"><%= r.instructor %> — <%= r.description %></p>
+        </div>
+      </div>
+    </div>
+  <% }) %>
+</div>
+<%- include('partials/footer') %>

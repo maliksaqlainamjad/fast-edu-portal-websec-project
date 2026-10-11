@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+<h3>Account settings</h3>
+<% if (updated) { %><div class="alert alert-success">Email updated.</div><% } %>
+<p>Username: <strong><%= user.username %></strong></p>
+<p>Current email on file: <strong id="current-email"><%= user.email || '(not loaded)' %></strong></p>
+
+<!-- VULNERABILITY #4: CSRF -->
+<!-- No CSRF token field here, and the server trusts the session cookie alone. -->
+<form method="POST" action="/account/update-email">
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input class="form-control" name="email" placeholder="new email">
+  </div>
+  <button class="btn btn-danger">Update email</button>
+</form>
+
+<p class="text-muted small mt-3">
+  Try the CSRF proof-of-concept page at
+  <code class="payload">vulnerable/attack-demo/malicious-csrf.html</code>
+  while logged in here.
+</p>
+<%- include('partials/footer') %>

@@ -1,0 +1,16 @@
+<%- include('partials/header') %>
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h3>Forgot password</h3>
+    <p class="text-muted">Enter your username to check whether an account exists (blind SQLi target).</p>
+    <form method="POST" action="/forgot-password">
+      <div class="mb-3"><input class="form-control" name="username" placeholder="username"></div>
+      <button class="btn btn-danger">Check</button>
+    </form>
+    <% if (result) { %><div class="alert alert-info mt-3"><%= result %></div><% } %>
+    <% if (typeof lastSql !== 'undefined' && lastSql) { %>
+      <div class="sql-trace mt-2"><%= lastSql %></div>
+    <% } %>
+  </div>
+</div>
+<%- include('partials/footer') %>
