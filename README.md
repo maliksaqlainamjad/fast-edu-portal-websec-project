@@ -1,4 +1,4 @@
-# FAST Edu-Portal — Web Security Project (Part 2, Blue Team Focus)
+# FLEX Edu-Portal — Web Security Project (Part 2, Blue Team Focus)
 
 A single project, **two switchable versions** of the same education-portal
 web app:
